@@ -13,6 +13,20 @@ libs: $(INSTALL_TARGETS)
 
 static: $(STATIC_ARCHIVE)
 
+containers: container-front-end container-quotes container-newsfeed container-static-assets
+
+container-front-end: 
+	docker build -t assessment-front-end --target assessment-front-end .
+
+container-quotes: 
+	docker build -t assessment-quotes --target assessment-quotes .
+
+container-newsfeed: 
+	docker build -t assessment-newsfeed --target assessment-newsfeed .
+
+container-static-assets: 
+	docker build -t assessment-static-assets --target assessment-static-assets .
+
 %.install:
 	cd $* && lein install
 
