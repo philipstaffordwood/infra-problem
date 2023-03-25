@@ -54,3 +54,12 @@ ENV APP_PORT=8082
 EXPOSE 8082
 
 CMD ["java", "-jar", "newsfeed.jar"]  
+
+FROM python:latest AS assessment-static-assets
+
+WORKDIR /assets
+COPY --from=builder /workspace/front-end/public ./
+
+EXPOSE 8000
+
+CMD ["./serve.py"]  
