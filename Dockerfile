@@ -3,7 +3,7 @@ FROM adoptopenjdk/openjdk8:latest AS builder
 WORKDIR /workspace
 
 
-COPY Makefile lei[n] /workspace/
+COPY anchor lei[n] /workspace/
 
 RUN apt-get update \
     && apt-get -y install make wget \
@@ -16,6 +16,7 @@ COPY front-end /workspace/front-end
 COPY newsfeed /workspace/newsfeed
 COPY quotes /workspace/quotes
 
+COPY Makefile /workspace/
 RUN make libs
 RUN make clean all
 
@@ -23,7 +24,7 @@ FROM adoptopenjdk/openjdk8:latest AS assessment-front-end
 
 WORKDIR /app
 COPY --from=builder /workspace/build/front-end.jar ./
-
+ 
 ENV APP_PORT=8080
 EXPOSE 8080
 
