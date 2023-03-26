@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-assessment-quotes
+  labels:
+    app: assessment-quotes
+spec:
+  replicas: {{ .Values.quotes.replicaCount }}
+  selector:
+    matchLabels:
+      app: assessment-quotes
+  template:
+    metadata:
+      labels:
+        app: assessment-quotes
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.quotes.image.repository }}:{{ .Values.quotes.image.tag }}"
+          imagePullPolicy: {{ .Values.quotes.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+

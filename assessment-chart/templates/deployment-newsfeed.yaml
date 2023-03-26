@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-assessment-newsfeed
+  labels:
+    app: assessment-newsfeed
+spec:
+  replicas: {{ .Values.newsfeed.replicaCount }}
+  selector:
+    matchLabels:
+      app: assessment-newsfeed
+  template:
+    metadata:
+      labels:
+        app: assessment-newsfeed
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.newsfeed.image.repository }}:{{ .Values.newsfeed.image.tag }}"
+          imagePullPolicy: {{ .Values.newsfeed.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8082
+              protocol: TCP
+

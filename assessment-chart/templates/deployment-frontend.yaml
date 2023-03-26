@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-assessment-frontend
+  labels:
+    app: assessment-frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: assessment-frontend
+  template:
+    metadata:
+      labels:
+        app: assessment-frontend
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            {{- with (index .Values.staticassets.ingress.hosts 0) }}
+            - name: STATIC_URL
+              value: http://{{ .host }}
+            {{- end }}
+            - name: QUOTE_SERVICE_URL
+              value: http://{{ .Release.Name }}-quotes-service:8081
+            - name: NEWSFEED_SERVICE_URL
+              value: http://{{ .Release.Name }}-newsfeed-service:8082
+            - name: NEWSFEED_SERVICE_TOKEN
+              value: 'T1&eWbYXNWG1w1^YGKDPxAWJ@^et^&kX'
+

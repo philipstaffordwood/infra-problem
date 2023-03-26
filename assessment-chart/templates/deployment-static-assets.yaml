@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-assessment-staticassets
+  labels:
+    app: assessment-staticassets
+spec:
+  replicas: {{ .Values.staticassets.replicaCount }}
+  selector:
+    matchLabels:
+      app: assessment-staticassets
+  template:
+    metadata:
+      labels:
+        app: assessment-staticassets
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.staticassets.image.repository }}:{{ .Values.staticassets.image.tag }}"
+          imagePullPolicy: {{ .Values.staticassets.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
