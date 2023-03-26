@@ -13,13 +13,34 @@ spec:
     metadata:
       labels:
         app: assessment-staticassets
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.staticassets.image.repository }}:{{ .Values.staticassets.image.tag }}"
           imagePullPolicy: {{ .Values.staticassets.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8000
               protocol: TCP
-
+          resources:
+            {{- toYaml .Values.staticassets.resources | nindent 12 }}
+      {{- with .Values.staticassets.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.staticassets.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.staticassets.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

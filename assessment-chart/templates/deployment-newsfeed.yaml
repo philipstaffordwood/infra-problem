@@ -13,13 +13,38 @@ spec:
     metadata:
       labels:
         app: assessment-newsfeed
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.newsfeed.image.repository }}:{{ .Values.newsfeed.image.tag }}"
           imagePullPolicy: {{ .Values.newsfeed.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8082
               protocol: TCP
-
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          resources:
+            {{- toYaml .Values.newsfeed.resources | nindent 12 }}
+      {{- with .Values.newsfeed.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.newsfeed.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.newsfeed.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
