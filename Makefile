@@ -46,7 +46,8 @@ push-container-static-assets:
 	docker tag assessment-static-assets localhost:32000/assessment-static-assets
 	docker push localhost:32000/assessment-static-assets
 
-
+deploy-microk8s:
+	microk8s helm3 upgrade --install assessment ./assessment-chart
 
 
 %.install:
