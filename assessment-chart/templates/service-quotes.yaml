@@ -4,7 +4,9 @@ metadata:
   name: {{ .Release.Name }}-quotes-service
 spec:
   selector:
-    app: assessment-quotes
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    component: assessment-quotes
   type: {{ .Values.quotes.service.type }}
   ports:
     - protocol: {{ .Values.quotes.service.protocol | default "TCP" }}

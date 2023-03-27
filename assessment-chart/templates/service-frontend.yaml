@@ -4,7 +4,9 @@ metadata:
   name: {{ .Release.Name }}-frontend-service
 spec:
   selector:
-    app: assessment-frontend
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: assessment-frontend
   type: {{ .Values.frontend.service.type }}
   ports:
     - protocol: {{ .Values.frontend.service.protocol | default "TCP" }}

@@ -4,7 +4,9 @@ metadata:
   name: {{ .Release.Name }}-newsfeed-service
 spec:
   selector:
-    app: assessment-newsfeed
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    component: assessment-newsfeed
   type: {{ .Values.newsfeed.service.type }}
   ports:
     - protocol: {{ .Values.newsfeed.service.protocol | default "TCP" }}

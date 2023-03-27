@@ -1,18 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-assessment-frontend
+  name: {{ include "assessment-chart-template.fullname" . }}-assessment-frontend
   labels:
-    app: assessment-frontend
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "assessment-chart-template.chart" . }}
+    app.kubernetes.io/component: assessment-frontend
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
-      app: assessment-frontend
+      app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: assessment-frontend
   template:
     metadata:
       labels:
-        app: assessment-frontend
+        app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: assessment-frontend
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
