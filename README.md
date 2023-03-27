@@ -6,9 +6,34 @@ This project contains three services:
 * `newsfeed` which aggregates several RSS feeds together
 * `front-end` which calls the two previous services and displays the results.
 
+## Local Development Environment
+
+The project can be run locally using the following setup:
+
+### Prerequisites
+
+[Microk8s](https://microk8s.io/)
+
+### Configure local k8s platform
+
+* Install [Microk8s](https://microk8s.io/)
+* Configure Microk8s with the required addons:
+
+```bash
+microk8s enable ingress registry dns helm3
+```
+
+### Local deployment
+
+Run the following `make` command:
+
+```bash
+make deploy-microk8s
+```
+
 ## Prerequisites
 
-* Java
+* Java 8
 * [Leiningen](http://leiningen.org/) (can be installed using `brew install leiningen`)
 
 ## Running tests
