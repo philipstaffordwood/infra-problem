@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "assessment-chart-template.fullname" . }}-assessment-newsfeed
+  labels:
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "assessment-chart-template.chart" . }}
+    app.kubernetes.io/component:  assessment-newsfeed
+spec:
+  replicas: {{ .Values.newsfeed.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      component: assessment-newsfeed
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        component: assessment-newsfeed
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.newsfeed.image.repository }}:{{ .Values.newsfeed.image.tag }}"
+          imagePullPolicy: {{ .Values.newsfeed.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8082
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          resources:
+            {{- toYaml .Values.newsfeed.resources | nindent 12 }}
+      {{- with .Values.newsfeed.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.newsfeed.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.newsfeed.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

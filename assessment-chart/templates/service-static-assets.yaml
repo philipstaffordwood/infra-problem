@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-staticassets-service
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: assessment-staticassets
+  type: {{ .Values.staticassets.service.type }}
+  ports:
+    - protocol: {{ .Values.staticassets.service.protocol | default "TCP" }}
+      port: {{ .Values.staticassets.service.port }}
+      targetPort: {{ .Values.staticassets.service.targetPort }}
