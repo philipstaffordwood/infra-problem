@@ -30,4 +30,21 @@ spec:
             - name: http
               containerPort: 8081
               protocol: TCP
-
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+          resources:
+            {{- toYaml .Values.quotes.resources | nindent 12 }}
+      {{- with .Values.quotes.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.quotes.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.quotes.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

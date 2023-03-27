@@ -50,13 +50,3 @@ app.kubernetes.io/name: {{ include "assessment-chart-template.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "assessment-chart-template.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "assessment-chart-template.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
