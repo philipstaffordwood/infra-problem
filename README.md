@@ -22,6 +22,15 @@ The project can be run locally using the following setup:
 ```bash
 microk8s enable ingress registry dns helm3
 ```
+### Add static host file entries
+
+Add the following entries to your hostfile:
+(see this [link](https://www.siteground.com/kb/hosts-file/) for instructions if you are not sure how)
+
+```
+127.0.0.1       chart-example.local
+127.0.0.1       chart-example-assets.local
+```
 
 ### Local deployment
 
