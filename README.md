@@ -16,11 +16,20 @@ The project can be run locally using the following setup:
 
 ### Configure local k8s platform
 
-* Install [Microk8s](https://microk8s.io/)
+* Install [Microk8s](https://microk8s.io/docs/install-alternatives)
 * Configure Microk8s with the required addons:
 
 ```bash
 microk8s enable ingress registry dns helm3
+```
+### Add static host file entries
+
+Add the following entries to your hostfile:
+(see this [link](https://www.siteground.com/kb/hosts-file/) for instructions if you are not sure how)
+
+```
+127.0.0.1       chart-example.local
+127.0.0.1       chart-example-assets.local
 ```
 
 ### Local deployment
