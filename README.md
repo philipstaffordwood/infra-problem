@@ -39,6 +39,7 @@ Run the following `make` command:
 ```bash
 make deploy-microk8s
 ```
+Open http://chart-example.local/ in a local browser.
 
 ## Prerequisites
 
