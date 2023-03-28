@@ -15,7 +15,7 @@ static: $(STATIC_ARCHIVE)
 
 containers: container-front-end container-quotes container-newsfeed container-static-assets
 
-push-containers: push-container-front-end push-container-quotes push-container-newsfeed push-container-static-assets
+push-containers: containers push-container-front-end push-container-quotes push-container-newsfeed push-container-static-assets
 
 
 container-front-end: 
@@ -46,7 +46,7 @@ push-container-static-assets:
 	docker tag assessment-static-assets localhost:32000/assessment-static-assets
 	docker push localhost:32000/assessment-static-assets
 
-deploy-microk8s:
+deploy-microk8s: push-containers
 	microk8s helm3 upgrade --install assessment ./assessment-chart
 
 
