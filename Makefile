@@ -13,6 +13,43 @@ libs: $(INSTALL_TARGETS)
 
 static: $(STATIC_ARCHIVE)
 
+containers: container-front-end container-quotes container-newsfeed container-static-assets
+
+push-containers: push-container-front-end push-container-quotes push-container-newsfeed push-container-static-assets
+
+
+container-front-end: 
+	docker build -t assessment-front-end --target assessment-front-end .
+
+push-container-front-end: 
+	docker tag assessment-front-end localhost:32000/assessment-front-end
+	docker push localhost:32000/assessment-front-end
+
+container-quotes: 
+	docker build -t assessment-quotes --target assessment-quotes .
+
+push-container-quotes: 
+	docker tag assessment-quotes localhost:32000/assessment-quotes
+	docker push localhost:32000/assessment-quotes
+
+container-newsfeed: 
+	docker build -t assessment-newsfeed --target assessment-newsfeed .
+
+push-container-newsfeed: 
+	docker tag assessment-newsfeed localhost:32000/assessment-newsfeed
+	docker push localhost:32000/assessment-newsfeed
+
+container-static-assets: 
+	docker build -t assessment-static-assets --target assessment-static-assets .
+
+push-container-static-assets: 
+	docker tag assessment-static-assets localhost:32000/assessment-static-assets
+	docker push localhost:32000/assessment-static-assets
+
+deploy-microk8s:
+	microk8s helm3 upgrade --install assessment ./assessment-chart
+
+
 %.install:
 	cd $* && lein install
 
