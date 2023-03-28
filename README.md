@@ -16,7 +16,7 @@ The project can be run locally using the following setup:
 
 ### Configure local k8s platform
 
-* Install [Microk8s](https://microk8s.io/)
+* Install [Microk8s](https://microk8s.io/docs/install-alternatives)
 * Configure Microk8s with the required addons:
 
 ```bash
